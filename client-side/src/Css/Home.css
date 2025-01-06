@@ -1,0 +1,155 @@
+.wholeContainer {
+  font-family: "Roboto", sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.home-header {
+  background-color: #454a67;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.home-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  background-color: #e0e0e0;
+  width: 120px;
+  height: auto;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.welcome-message {
+  background-color: #454a67;
+  color: #f4f4f4;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.welcome-message:hover {
+  background-color: #ffffff;
+  color: #454a67;
+}
+
+.user-icon-container {
+  position: relative;
+  cursor: pointer;
+}
+
+.user-icon {
+  font-size: 24px;
+  color: #f4f4f4;
+  transition: color 0.3s ease;
+}
+
+.user-icon:hover {
+  color: #ffffff;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 30px; /* Adjust based on your icon's size */
+  right: 0;
+  background-color: #f4f4f4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 10px;
+  z-index: 10;
+}
+
+.user-icon-container:hover .dropdown-menu,
+.user-icon-container:focus .dropdown-menu,
+.dropdown-menu.open {
+  display: block; /* Show when toggled */
+}
+
+.home-main-container {
+  flex: 1;
+  padding: 20px;
+  /* background-color: #f8f9fa; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.main-heading {
+  font-size: 20px;
+  color: #454a67;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.projects-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.project-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  height: 100px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.project-card h4 {
+  font-size: 28px;
+  color: #454a67;
+  margin: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .home-header-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .projects-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .project-card {
+    width: 100%;
+  }
+}

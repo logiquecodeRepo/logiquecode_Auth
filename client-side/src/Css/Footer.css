@@ -1,0 +1,59 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.footer-container {
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: 8px 8px 24px 0px #454a67;
+  position: relative;
+  bottom: 0;
+  left: 0; /* Ensures it starts from the very left of the viewport */
+  width: 100vw; /* Ensures it spans the entire width of the viewport */
+  z-index: 10;
+  /* overflow-y: auto; */
+  
+}
+
+.footer-content {
+  max-width: 1200px; /* Limit the content inside */
+  margin: 0 auto;
+  text-align: center;
+}
+
+.footer-content p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.footer-content p a{
+  color: black;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 0;
+}
+
+.footer-links li {
+  font-size: 14px;
+}
+
+.footer-links a {
+  color: #454a67;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+  color: black;
+}

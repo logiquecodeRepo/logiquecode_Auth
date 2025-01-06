@@ -1,0 +1,286 @@
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* Ensures the background covers full height */
+  scroll-behavior: auto;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #454a67 #f4f4f4; /* Thumb color and track color for Firefox */
+  /* overflow: hidden; */
+}
+
+/* Webkit-based browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px; /* Adjust the width of the scrollbar */
+  height: 8px; /* Adjust the height of the scrollbar (for horizontal scrollbars) */
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f4f4; /* Color of the scrollbar track */
+  border-radius: 10px; /* Optional: round corners */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #454a67; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Optional: round corners */
+  border: 2px solid #f4f4f4; /* Adds space between the track and thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #4d526d; /* Color on hover */
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: #3e435a; /* Color when active (clicked) */
+}
+
+/* Main Container */
+.main-container {
+  display: flex;
+  justify-content: space-between; /* Distribute space between left and right containers */
+  align-items: center; /* Center align items vertically if needed */
+  height: 100%; /* Full height */
+  flex-wrap: nowrap; /* Ensure left and right containers don't wrap */
+}
+
+/* Left Container */
+.main-container .left-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content vertically */
+  align-items: flex-start; /* Align content to the left */
+  flex: 1; /* Take up equal space with the right container */
+  height: 100%;
+  padding: 20px; /* Add some padding */
+  position: relative; /* Set relative positioning for absolute children */
+  margin-top: 3rem;
+}
+
+.main-container .img-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Vertically center the image and title */
+  gap: 10px; /* Add spacing between image and title */
+  position: fixed; /* Position it absolutely within the left container */
+  top: 1rem; /* Add distance from the top */
+  left: 1rem; /* Add distance from the left */
+}
+
+.main-container .img-title .img img {
+  width: 60px;
+  height: auto;
+  max-width: 100%; /* Ensure responsiveness */
+}
+
+.main-container .img-title h4 a {
+  text-decoration: none;
+  color :#373b4e
+}
+.main-container .left-container .img-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto; /* Push the second image to the middle of the left container */
+  margin-bottom: auto; /* Center vertically */
+}
+
+.main-container .left-container .img-2 img {
+  width: 600px;
+  height: auto;
+  max-width: 100%; /* Ensure responsiveness */
+}
+
+.footer-items {
+  position: fixed; /* Ensure it is positioned within the container */
+  bottom: 1rem; /* Add some space from the bottom */
+  left: 50%; /* Center horizontally relative to the container */
+  transform: translateX(-50%); /* Adjust to center the element */
+  text-align: center; /* Center align the text and links */
+  width: 100%; /* Optional: Ensure it spans the container */
+}
+
+.footer-items p {
+  font-size: 11px;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.footer-items p a {
+  color: black;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 0;
+}
+
+.footer-links li {
+  font-size: 11px;
+}
+
+.footer-links a {
+  color: #454a67;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+  color: black;
+}
+
+/* Right Container */
+.right-container {
+  background-color: #fff;
+  padding: 20px 38px;
+  border-radius: 10px;
+  margin: 2rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+  align-self: flex-start; /* Align the right container at the top */
+}
+
+.right-container h1 {
+  text-align: center;
+  color: #4d526d;
+}
+
+.right-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.right-container input {
+  width: 100%;
+  font-size: 20px;
+  padding: 10px;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid black;
+  padding-right: 30px; /* Add space for the icon */
+}
+
+.right-container input::placeholder {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.right-container div {
+  position: relative; /* Ensure the icons can be positioned inside the input */
+  margin-top: 10px;
+}
+
+.right-container i {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Position the icon on the right */
+  transform: translateY(-50%); /* Center the icon vertically */
+  font-size: 18px;
+  color: #454a67; /* Keep the icon color same as text */
+}
+
+button {
+  background-color: #454a67;
+  border: none;
+  font-size: 20px;
+  color: white;
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  margin: 10px;
+  transition: transform 0.3s ease;
+}
+
+button:active {
+  transform: scale(0.9);
+}
+
+span {
+  margin: auto;
+}
+
+.otp-button {
+  position: relative;
+  width: 100%;
+}
+
+.otp-button input {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  padding-right: 100px;
+}
+
+.otp-button span {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background-color: #454a67;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+.otp-button span:hover {
+  background-color: #4d526d;
+}
+
+.otp-button span:active {
+  transform: translateY(-50%) scale(0.9);
+  transition: 0.3s ease;
+}
+
+/* Responsive Styling */
+@media  (max-width: 1153px) {
+  body{
+    overflow-x: hidden;
+  }
+  .footer-items{
+    margin-top: 15rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    height: 100vh; /* Ensure it spans the full viewport height */
+  }
+
+  .main-container .left-container .img-2 {
+    display: none; /* Hide the left container (image) on smaller screens */
+  }
+
+  .main-container .img-title {
+    position: relative; /* Ensure proper alignment when left container image is hidden */
+    margin: 1rem auto -4rem auto; /* Center horizontally with some margin */
+    display: flex;
+    justify-content: center; /* Center the content inside */
+    align-items: center; /* Vertically align the content */
+  }
+
+  .right-container {
+    margin: 1rem auto; /* Center horizontally and add spacing from other elements */
+  }
+
+  .footer-items{
+    position:unset;
+  }
+}
+
