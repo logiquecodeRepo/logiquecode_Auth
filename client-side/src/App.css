@@ -1,3 +1,10 @@
-body{
+@import "tailwindcss";
+
+body {
   background-color: aliceblue;
+}
+
+.content {
+  position: relative;
+  transition: margin-left 0.3s ease;
 }

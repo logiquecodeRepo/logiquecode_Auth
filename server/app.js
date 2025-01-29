@@ -7,10 +7,10 @@ let db = require('./database')
 let cors = require('cors');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/usersRouter');
 var authRouter = require('./routes/AuthRouter');
 var otpRouter = require('./routes/otpRouter');
-var projectRouter = require('./routes/getProjectDetails');
+var projectRouter = require('./routes/getProjectDetailsRouter');
 const validateTokenRouter = require('./routes/validateTokenRouter');
 
 var app = express();

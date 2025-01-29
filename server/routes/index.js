@@ -1,11 +1,6 @@
 var express = require('express');
-var router = express.Router();
-let {create, getUser}  = require('../controller/userController')
-let ensureAuthentication = require('../Middlewares/Auth');
-
-/* GET home page. */
-router.post('/CreateUser', create);
-router.get('/GetUser', ensureAuthentication, getUser);
+var router = express.Router()
+let ensureAuthentication  = require('../Middlewares/Auth');
 
 router.get('/', ensureAuthentication, async (req, res) =>{
   res.status(200).json([

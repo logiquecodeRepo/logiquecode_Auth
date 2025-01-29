@@ -1,45 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { handleError, handleSuccess } from "../utils";
+import { handleError } from "../utils";
 import { ToastContainer } from "react-toastify";
-import "../Css/Home.css";
+import Header from "../Components/Header";
+import Footer from "../Components/Footer";
 
 function Home() {
-  const [loggedInUser, setLoggedInUser] = useState("");
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
 
   const navigate = useNavigate();
-
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // Set the API base URL here
-  console.log("api url", API_BASE_URL);
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
-    const user = localStorage.getItem("name");
     const token = localStorage.getItem("token");
 
     if (!token) {
-      navigate("/login");
+      handleError("Please Login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
     } else {
-      setLoggedInUser(user);
       fetchUserDetails();
     }
-  }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("name");
-    handleSuccess("User LoggedOut");
-    setTimeout(() => {
-      navigate("/login");
-    }, 1000);
-  };
+    // Listen for screen resize to determine if it's desktop
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 1024);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const fetchUserDetails = async () => {
     setLoading(true);
     try {
-      const url = `${API_BASE_URL}/projects/getProjectsDetails`; // Use the base URL here
+      const url = `${API_BASE_URL}/projects/getProjectsDetails`;
       const headers = {
         headers: {
           Authorization: localStorage.getItem("token"),
@@ -77,11 +76,8 @@ function Home() {
     const username = localStorage.getItem("name");
 
     if (["DPMS", "LMS", "Chemist", "CRM", "Other"].includes(name)) {
-      // Set token and username in cookies
       setCookie("authToken", token, 1);
       setCookie("username", username, 1);
-
-      // Redirect to project serverUrl
       window.open(serverUrl, "_blank");
     } else {
       handleError("Unknown project");
@@ -92,90 +88,42 @@ function Home() {
     return <p>Loading...</p>;
   }
 
-  const toggleDropdown = () => {
-    setShowDropdown((prev) => !prev);
-  };
-
   return (
-    <div className="wholeContainer">
-      {/* Header */}
-      <header className="home-header">
-        <div className="home-header-content">
-          <div className="logo-container">
-            <img
-              src="/LogiqueCode.png" // Replace with the actual logo path
-              alt="Logo"
-              className="logo"
-            />
-          </div>
-          <div className="user-info">
-            <span className="welcome-message">Welcome, {loggedInUser}!</span>
-            <div className="user-icon-container" onClick={toggleDropdown}>
-              <i className="fa-regular fa-circle-user user-icon"></i>
-              {showDropdown && (
-                <div className="dropdown-menu open">
-                  <button onClick={handleLogout} className="logout-button">
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="ml-5 mr-5">
+      {/* Header with menu toggle handler */}
+      <Header onMenuToggle={setMenuOpen} />
 
-      {/* Main Content */}
-      <main className="home-main-container">
-        <h3 className="main-heading">Select a Project:</h3>
-        <div className="projects-container">
+      {/* Main Content - Move only for desktop */}
+      <main
+        className={`p-6 mt-16 shadow shadow-slate-700 rounded-lg bg-gray-50 transition-all duration-300 ${
+          isDesktop && menuOpen ? "ml-64" : "ml-0"
+        }`}
+      >
+        <h3 className="main-heading text-2xl font-semibold text-gray-700 mb-4">
+          LogiqueCode Projects
+          <i class="fa-solid fa-rocket ml-2"></i>
+        </h3>
+        <div className="projects-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-4">
           {projects.length > 0 ? (
             projects.map((project, index) => (
               <div
                 key={index}
-                className="project-card"
+                className="project-card p-4 bg-white shadow-md rounded-lg hover:bg-gray-100 cursor-pointer"
                 onClick={() => handleProjectClick(project)}
               >
-                <h4>{project.name}</h4>
+                <h4 className="flex justify-between items-center text-lg font-semibold text-gray-800">
+                  {project.name} <i className="fa-solid fa-paper-plane"></i>
+                </h4>
               </div>
             ))
           ) : (
-            <p>No projects available.</p>
+            <p className="text-gray-600">No projects available.</p>
           )}
         </div>
       </main>
 
-      <div className="footer-items">
-        <p>
-          © 2024{" "}
-          <a href="https://www.logiquecode.com" target="_blank">
-            LogiqueCode
-          </a>
-          . All rights reserved.
-        </p>
-        <ul class="footer-links">
-          <li>
-            <a
-              href="https://www.logiquecode.com/index.php#about"
-              target="_blank"
-            >
-              About Us
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.logiquecode.com/index.php#contact"
-              target="_blank"
-            >
-              Contact
-            </a>
-          </li>
-          <li>
-            <a href="https://www.logiquecode.com/index.php#" target="_blank">
-              Privacy Policy
-            </a>
-          </li>
-        </ul>
-      </div>
+      {/* Footer */}
+      <Footer />
       <ToastContainer />
     </div>
   );

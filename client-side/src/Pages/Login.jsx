@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
 import { ToastContainer } from "react-toastify";
-import "../Css/Signup.css";
 import { handleError, handleSuccess } from "../utils";
-import Header from "../Layout/Header";
+import Footer from "../Components/Footer";
 
 export default function Login() {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
@@ -17,6 +16,7 @@ export default function Login() {
   });
   const [captchaToken, setCaptchaToken] = useState(""); // Store reCAPTCHA token
   const [isOTPVerified, setIsOTPVerified] = useState(false); // Track OTP verification
+  const [showPassword, setShowPassword] = useState(false);   // Show password 
 
   const navigate = useNavigate();
 
@@ -156,111 +156,103 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <div className="main-container">
-        <div className="img-title">
-          <div className="img">
-            <img src="/LogiqueCode.png" alt="Image" />
-          </div>
-          <div className="title">
-            <h4>
-              <a href="https://logiquecode.com">LogiqueCode</a>
-            </h4>
-          </div>
-        </div>
-        <div className="left-container">
-          <div className="img-2">
-            <img src="/login_img_second.svg" alt="Image" />
-          </div>
-        </div>
-
-        <div className="right-container">
-          <h1>Sign-In</h1>
-          <form onSubmit={handleLogIn}>
-            <div>
-              {/* <label htmlFor="username">Username</label> */}
-              <input
-                type="text"
-                name="username"
-                onChange={handleChange}
-                id="username"
-                placeholder="Enter your Username..."
-                value={loginInfo.username}
-              />
-              <i class="fa-solid fa-user"></i>
-            </div>
-            <div>
-              {/* <label htmlFor="password">Password</label> */}
-              <input
-                type="password"
-                name="password"
-                onChange={handleChange}
-                id="password"
-                placeholder="Enter your password.."
-                value={loginInfo.password}
-              />
-              <i class="fa-solid fa-lock"></i>
-            </div>
-            <div className="otp-button">
-              <input
-                type="text"
-                name="otp"
-                id="otpInput"
-                placeholder="Enter Your OTP..."
-                value={loginInfo.otp}
-                onChange={handleOTPChange}
-                // onChange={handleChange}
-              />
-              <span id="otpButton" onClick={handleOTP}>
-                Send OTP
-              </span>
-            </div>
-            <div className="mt-3">
-              <ReCAPTCHA
-                sitekey={import.meta.env.VITE_CAPTCHA_SITE_KEY}
-                onChange={handleReCAPTCHA}
-                className="g-recaptcha"
-              />
-            </div>
-            <button type="submit" disabled={!isOTPVerified}>
-              LogIn
-            </button>
-          </form>
-        </div>
-        <div className="footer-items">
-          <p>
-            © 2024{" "}
-            <a href="https://www.logiquecode.com" target="_blank">
-              LogiqueCode
-            </a>
-            . All rights reserved.
-          </p>
-          <ul class="footer-links">
-            <li>
-              <a
-                href="https://www.logiquecode.com/index.php#about"
-                target="_blank"
-              >
-                About Us
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.logiquecode.com/index.php#contact"
-                target="_blank"
-              >
-                Contact
-              </a>
-            </li>
-            <li>
-              <a href="https://www.logiquecode.com/index.php#" target="_blank">
-                Privacy Policy
-              </a>
-            </li>
-          </ul>
-        </div>
-        <ToastContainer />
+    <div className="flex flex-col lg:flex-row min-h-screen items-center justify-around p-2 bg-gray-100">
+      {/* Top-left Image and Title */}
+      <div className="absolute top-4 left-4 flex items-center space-x-2">
+        <img src="/LogiqueCode.png" alt="Image" className="w-13 h-10" />
+        <h4 className="text-3xl font-semibold mb-1">
+          <a
+            href="https://logiquecode.com"
+            className="text-slate-700 no-underline"
+          >
+            LogiqueCode
+          </a>
+        </h4>
       </div>
+
+      {/* Left Image Container */}
+      <div className="hidden lg:flex w-1/2 justify-center">
+        <img
+          src="/login_img_second.svg"
+          alt="Image"
+          className="max-w-xs md:max-w-md"
+        />
+      </div>
+
+      {/* Right Form Container */}
+      <div className="w-full lg:w-1/3 bg-white p-8 rounded-lg shadow-md max-w-md">
+        <h1 className="text-3xl font-bold text-center text-slate-700 mb-6">
+          LC_AUTH Sign-In
+        </h1>
+        <form onSubmit={handleLogIn} className="space-y-4">
+          <div className="relative">
+            <input
+              type="text"
+              name="username"
+              onChange={handleChange}
+              id="username"
+              placeholder="Enter your Username..."
+              value={loginInfo.username}
+              className="w-full p-3 border-b-2 focus:outline-none border-slate-700"
+            />
+            <i className="fa-solid fa-user absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-700"></i>
+          </div>
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              onChange={handleChange}
+              id="password"
+              placeholder="Enter your password..."
+              value={loginInfo.password}
+              className="w-full p-3 border-b-2 border-slate-700 focus:outline-none"
+            />
+            <i
+              className={`fa-solid ${
+                showPassword ? "fa-eye-slash" : "fa-eye"
+              } absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-700 cursor-pointer`}
+              onClick={() => setShowPassword(!showPassword)}
+            ></i>
+          </div>
+
+          <div className="relative flex items-center">
+            <input
+              type="text"
+              name="otp"
+              id="otpInput"
+              placeholder="Enter Your OTP..."
+              value={loginInfo.otp}
+              onChange={handleOTPChange}
+              className="w-full p-3 border-b-2 border-slate-700 focus:outline-none "
+            />
+            <span
+              id="otpButton"
+              onClick={handleOTP}
+              className="absolute top-0 right-0 px-4 py-2 bg-slate-700 text-white rounded-lg cursor-pointer hover:bg-slate-800"
+            >
+              <i className="fa-solid fa-paper-plane"></i> {/* Send OTP icon */}
+              <span>OTP</span>
+            </span>
+          </div>
+          <div className="flex justify-center">
+            <ReCAPTCHA
+              sitekey={import.meta.env.VITE_CAPTCHA_SITE_KEY}
+              onChange={handleReCAPTCHA}
+              className="g-recaptcha"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={!isOTPVerified}
+            className="w-full bg-slate-700 cursor-pointer text-white p-3 rounded-lg hover:bg-slate-800 disabled:opacity-50 flex items-center justify-center space-x-2"
+          >
+            <i className="fa-solid fa-sign-in-alt"></i> {/* Sign-in icon */}
+            <span>Log In</span>
+          </button>
+        </form>
+      </div>
+      <Footer />
+      <ToastContainer />
     </div>
   );
 }

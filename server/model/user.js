@@ -9,10 +9,7 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    roles: {
-        type: [String], // Array of strings
-        required: true
-    }
+
 });
 
 const UserSchema = new mongoose.Schema({
@@ -46,7 +43,13 @@ const UserSchema = new mongoose.Schema({
     projects: {
         type: [ProjectSchema], // Array of embedded ProjectSchema
         default: []
-    }
+    },
+    userType: {
+        type: String,
+    },
+    status: {
+        type: String,
+    },
 });
 
 module.exports = mongoose.model('sso_login', UserSchema);
