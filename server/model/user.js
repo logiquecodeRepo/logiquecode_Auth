@@ -50,6 +50,16 @@ const UserSchema = new mongoose.Schema({
     status: {
         type: String,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+    expiresAt: {
+        type: Date,
+    }
 });
+
+// TTL index on expiresAt field
+ProjectSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
 module.exports = mongoose.model('sso_login', UserSchema);

@@ -79,7 +79,7 @@ const Header = ({ onMenuToggle }) => {
 
           {/* Right Side: User Info and Icon */}
           <div className="flex items-center space-x-4">
-            <span className="text-slate-700 font-semibold">{`Welcome, ${username}!`}</span>
+            {/* <span className="text-slate-700 font-semibold">{`Welcome, ${username}!`}</span> */}
             <div className="relative" ref={userDropdownRef}>
               <i
                 className="fa-regular fa-circle-user text-slate-700 cursor-pointer text-3xl"

@@ -182,7 +182,7 @@ export default function Login() {
       {/* Right Form Container */}
       <div className="w-full lg:w-1/3 bg-white p-8 rounded-lg shadow-md max-w-md">
         <h1 className="text-3xl font-bold text-center text-slate-700 mb-6">
-          LC_AUTH Sign-In
+          Sign-In
         </h1>
         <form onSubmit={handleLogIn} className="space-y-4">
           <div className="relative">

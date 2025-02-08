@@ -2,16 +2,19 @@ let User = require('../model/user');
 
 const create = async (req, res) => {
     try {
-        const { name, email, username, password, projectName, projectUrl, number, userType } = req.body;
+        const { name, email, username, password, projectName, projectUrl, number, userType, expirationTime, currentDateTime } = req.body;
         console.log('email', email, 'name', name);
 
-        const regex = /^[a-zA-Z0-9_]+$/;
-        if (!regex.test(username)) {
-            return res.status(400).json({
-                message: "Username can only contain letters, numbers, and underscores.",
-                success: false,
-            });
-        }
+        // const regex = /^[a-zA-Z0-9_]+$/;
+        // we commented this code bcs of patient id content other latters and it blocks
+        // if (!regex.test(username)) {
+        //     console.log("Username can only contain letters, numbers, and underscores.")
+        //     return res.status(400).json({
+        //         message: "Username can only contain letters, numbers, and underscores.",
+        //         success: false,
+        //     });
+        // }
+
 
         if (username.length < 3 || username.length > 15) {
             return res.status(400).json({
@@ -23,13 +26,13 @@ const create = async (req, res) => {
         const userExist = await User.findOne({ email });
         if (userExist) {
             console.log('User already exists.');
-            return res.status(401).json({ message: "User already exists.", success: false });
+            return res.status(409).json({ message: "User already exists.", data:userExist, success: false });
         }
 
         const existingUsername = await User.findOne({ username });
         if (existingUsername) {
             console.log('Username already exists.');
-            return res.status(401).json({ message: "Username already exists.", success: false });
+            return res.status(409).json({ message: "User already exists.", data:existingUsername, success: false });
         }
 
         const ssoLoginSave = new User({
@@ -46,6 +49,9 @@ const create = async (req, res) => {
             ],
             status: "active",
             userType: userType,
+            createdAt: currentDateTime,
+            expiresAt: expirationTime ?? null
+
         })
 
         const savedData = await ssoLoginSave.save();
@@ -53,7 +59,7 @@ const create = async (req, res) => {
             return res.status(401).json({ message: "User not created.", success: false });
         }
 
-        return res.status(200).json({ message: "User created successfully.", success: true });
+        return res.status(200).json({ message: "User created successfully.", savedData, success: true });
 
     } catch (error) {
         console.log('error :', error);
@@ -61,6 +67,91 @@ const create = async (req, res) => {
     }
 }
 
+const editUser = async (req, res, next) => {
+    try {
+        const { name, username, email, number, gender, userType, status } = req.body;
+
+        // Validate required fields
+        const requiredFields = ['name', 'username', 'email', 'number', 'gender', 'userType', 'status', 'hospitalId'];
+        const missingFields = requiredFields.filter(field => !req.body[field]?.trim());
+
+        if(userType === 'admin') return res.status(400).json({message:"You can't change a user or anyone else into an admin."});
+
+        if (missingFields.length > 0) {
+            return res.status(400).json({
+                message: `Missing required fields: ${missingFields.join(', ')}`,
+                success: false
+            });
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                message: 'Invalid email format',
+                success: false
+            });
+        }
+
+        // Prevent privilege escalation
+        if (userType === 'admin') {
+            return res.status(403).json({
+                message: "Admin role modification not permitted",
+                success: false
+            });
+        }
+
+        // Check for email conflicts
+        const existingUser = await User.findOne({
+            email: email.trim().toLowerCase(),
+            username,
+            username: { $ne: username }
+        });
+
+        if (existingUser) {
+            return res.status(409).json({
+                message: 'Email already exists for another user',
+                success: false
+            });
+        }
+
+        // Update user document with validation
+        const updatedUser = await User.findOneAndUpdate(
+            { username },  // Ensure hospitalId matches
+            {
+                $set: {
+                    name: name.trim(),
+                    email: email.trim().toLowerCase(),
+                    number: number.replace(/\D/g, ''), // Remove non-digit characters
+                    gender,
+                    userType,
+                    status
+                }
+            },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({
+                message: 'User not found',
+                success: false
+            });
+        }
+
+        // Omit sensitive fields from response
+        const { password, __v, ...safeUser } = updatedUser.toObject();
+
+        return res.status(200).json({
+            data: safeUser,
+            message: 'User updated successfully',
+            success: true
+        });
+
+    } catch (error) {
+        console.log('error', error)
+        return(500).json({message:"Something went wrong to update User. Please try again later", success:false})
+    }
+}
 
 const getUser = async (req, res) => {
     try {
@@ -70,4 +161,4 @@ const getUser = async (req, res) => {
         console.log("Error found in db :", error);
     }
 }
-module.exports = { create, getUser };
+module.exports = { create, getUser, editUser, };

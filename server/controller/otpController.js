@@ -258,7 +258,7 @@ const sendotp = async (req, res, next) => {
         });
     } catch (err) {
         console.log('error: ', err);
-        return res.status(500).json({ message: "Internal server error", success: false });
+        return res.status(500).json({ message: "Something went wrong. Please try again later", success: false });
     }
 
 }
