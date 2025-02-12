@@ -52,7 +52,7 @@ const sendotp = async (req, res, next) => {
 
         if (response.status == 200 && response.data.result == 'success') {
             console.log('response:', response.status, response.data.result, response.data, number, generatedOtp);
-            res.status(200).json({ messgage: "Otp send successfull to mobile and username", success: true, generatedOtp})
+            res.status(200).json({ messgage: "Otp send successfull to mobile and username", success: true, generatedOtp })
         } else {
             console.log('response:', response.status, response.data.result, response.data, data.number);
             res.status(400).json({ message: "otp failed due api error and other!", success: false, generatedOtp });
@@ -76,7 +76,7 @@ const sendotp = async (req, res, next) => {
         const mailOptions = {
             from: 'developers@logiquecode.com',
             to: email,
-            subject: `DPMS otp for login : ${generatedOtp}`,
+            subject: `LogiqueCode SSO Login Validation OTP`,
             html: `
             <head>
           <meta charset="UTF-8">
@@ -91,159 +91,142 @@ const sendotp = async (req, res, next) => {
             
       
           <style>
-              * {
-                  box-sizing: border-box;
-              }
-      
-              body {
-                  margin: 0;
-                  padding: 0;
-                  font-family: Arial, sans-serif;
-              }
-      
-              .header {
-                  background-color: rgb(48, 63, 82);
-                  text-align: center;
-                  color: white;
-                  padding: 25px 0 1px 0;
-              }
-      
-              .logo {
-                  width: 90px;
-                  height: 80px;
-                  margin: 5px auto 5px auto;
-                  background-color:white;
-              }
-      
-              .logo img {
-                  width: 80px;
-                  height: 70px;
-                  margin-top:6px;
-              }
-      
-              .content {
-                  text-align: center;
-                  padding: 1rem;
-              }
-      
-              .content h1 {
-                  margin-top: 5rem;
-                  font-size: 3rem;
-              }
-      
-              .content p {
-                  font-size: 1.5rem;
-              }
-      
-              .button {
-                  display: inline-block;
-                  padding: 15px 30px;
-                  background-color: rgb(48, 63, 82);
-                  color: white;
-                  text-decoration: none;
-                  border-radius: 40px;
-                  margin-top: 20px;
-                  font-size: 1.2rem;
-              }
-      
-              .credentials {
-                  background-color: rgb(0, 0, 0);
-                  color:white;
-                  text-align: center;
-                  border-radius: 5px;
-                  margin: 20px auto;
-                  padding: 10px;
-                  width: 80%;
-              }
-      
-              .credentials p{
-                color:rgb(255, 238, 0);
-              }
-              .footer {
-                  text-align: center;
-                  margin: 20px 0;
-                  padding: 0 20px;
-                  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-              }
-      
-              .footer a {
-                  color: black;
-                  font-size: 2rem;
-                  font-family: sans-serif;
-                  text-decoration: none;
-                  margin:auto;
-              }
-      
-      
-              @media screen and (max-width: 768px) {
-                  .logo {
-                    width: 90px;
-                    height: 80px;
-                  }
-      
-                  .content h1 {
-                      font-size: 2rem;
-                      margin-bottom:5rem;
-                  }
-      
-                  .content p {
-                      font-size: .9rem;
-                  }
-      
-                  .button {
-                      padding: 12px 24px;
-                      font-size: .9rem;
-                      color: white;
-                  }
-      
-                  .credentials {
-                      width: 90%;
-                  }
-      
-                  .credentials h1 {
-                    font-size:1rem;
+                * {
+                    box-sizing: border-box;
+                    margin: 0;
+                    padding: 0;
                 }
-      
-                  .footer a {
-                      font-size: 1.5rem;
-                  }
-      
-                  .footer .contact-icons i {
-                      font-size: 1.5rem;
-                  }
-              }
-          </style>
-      </head>
-      
-      <body>
-          <div style="background-color: rgb(227, 224, 224); padding-bottom: 1rem;">
-              <div class="header">
-                  <div class="logo">
-                    <img src="https://th.bing.com/th/id/OIP.6HHei9qJ1ZRSQHWiFZsWWgHaFW?rs=1&pid=ImgDetMain" alt="logiquecode logo">
-                  </div>
-                  <h1>LogiqueCodeLLP</h1>
-              </div>
-      
-              <div class="content">
-              <img src="https://logiquecode.com/assets/img/home/dpms.png" style="max-width: 100%;"
-              alt="emailImage">
-                  <h1>Welcome to the Doctor Patient Management System</h1>
-                  <p>Simple, Lightweight, Easy to use Software for record keeping patients health records, Pathalogy reports,
-                      Doctors Prescriptions Bill records at one place, so that every single minute information of your health
-                      is not missed and Doctors can have a previous health history for better medicine recommendation.</p>
-                  <a href="https://demo.logiquecode.com:5000/" style="color:white"; class="button" target="_blank">https://demo.logiquecode.com:5000</a>
-              </div>
-      
-              <div class="credentials">
-                  <h1>DPMS LOGIN OTP : ${generatedOtp}</h1>
-                  <p>do not share this otp with anyone!</p>
-              </div>
-          </div>
-      
-          <div class="footer">
-              <a href="www.logiquecode.com">www.logiquecode.com</a>
-          </div>
-      </body>
+
+                body {
+                    background-color: #f4f4f4;
+                    font-family: Arial, sans-serif;
+                    padding: 20px;
+                }
+
+                .email-container {
+                    max-width: 600px;
+                    margin: auto;
+                    background-color: #ffffff;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                .header {
+                    background-color: #303f52;
+                    text-align: center;
+                    color: #ffffff;
+                    padding: 20px;
+                }
+
+                .logo img {
+                    width: 80px;
+                    height: auto;
+                    margin: 10px 0;
+                }
+
+                .content {
+                    padding: 10px;
+                }
+                
+
+                .content h1 {
+                    font-size: 24px;
+                    color: #333333;
+                    margin: 2rem 0rem .5rem 0rem;
+                }
+
+                .content p {
+                    font-size: 16px;
+                    color: #555555;
+                    line-height: 1.6;
+                    margin: 1rem 0;
+                }
+
+                .img {
+                    text-align: center;
+                }
+
+                .button {
+                    display: inline-block;
+                    padding: 12px 25px;
+                    background-color: #303f52;
+                    color: #ffffff;
+                    text-decoration: none;
+                    border-radius: 25px;
+                    margin: 15px 0;
+                    font-size: 16px;
+                }
+                .button a{
+                    color: white;
+                    text-decoration: none;
+                }
+                
+                .otherText{
+                    margin:4rem 0rem;
+                    padding: 10px;
+                    text-align: left;
+                }
+
+                .footer {
+                    text-align: center;
+                    background-color: #e3e0e0;
+                    padding: 15px;
+                }
+
+                .footer a {
+                    color: #000000;
+                    text-decoration: none;
+                    font-size: 14px;
+                }
+
+                @media screen and (max-width: 600px) {
+                    .content h1 {
+                        font-size: 20px;
+                    }
+
+                    .content p {
+                        font-size: 14px;
+                    }
+
+                    .button {
+                        padding: 10px 20px;
+                        font-size: 14px;
+                    }
+                }
+            </style>
+                </head>
+                
+                <body>
+                <div class="email-container">
+                    <div class="header">
+                        <div class="logo">
+                            <img src="https://th.bing.com/th/id/OIP.6HHei9qJ1ZRSQHWiFZsWWgHaFW?rs=1&pid=ImgDetMain" alt="LogiqueCode Logo">
+                        </div>
+                        <h1>LogiqueCode LLP</h1>
+                    </div>
+
+                    <div class="img">
+                        <img src="https://app.logiquecode.com/public/javascripts/login_img_first.png" style="max-width: 100%; height: auto;" alt="Email Image">
+                    </div>
+
+                    <div class="content">
+                        <h1>Dear ${username}</h1>
+                        <p>To complete your login, please enter the following one-time password (OTP): <strong>${generatedOtp}</strong></p>
+                        <p>This code will expire in 10 minutes. If you did not request this login, please ignore this email.</p>
+                    </div>
+
+                    <div class="otherText">
+                        <p>Sincerely,</p>
+                        <p>LogiqueCode LLP</p>
+                    </div>
+
+                    <div class="footer">
+                        <a href="https://www.logiquecode.com">www.logiquecode.com</a>
+                    </div>
+                </div>
+            </body>
+
             `,
         };
 
@@ -267,7 +250,7 @@ const sendotp = async (req, res, next) => {
 const verifyotp = async (req, res, next) => {
     try {
         const { username, otp } = req.body;
-        
+
 
         if (!username) {
             return res.status(400).json({ message: "username not found", success: false });

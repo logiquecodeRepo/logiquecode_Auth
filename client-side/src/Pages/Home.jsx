@@ -75,7 +75,7 @@ function Home() {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("name");
 
-    if (["DPMS", "LMS", "Chemist", "CRM", "Other"].includes(name)) {
+    if (["DPMS", "LMS", "CMRKS", "CRM", "Other"].includes(name)) {
       setCookie("authToken", token, 1);
       setCookie("username", username, 1);
       window.open(serverUrl, "_blank");

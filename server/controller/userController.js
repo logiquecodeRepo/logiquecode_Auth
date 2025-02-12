@@ -26,13 +26,13 @@ const create = async (req, res) => {
         const userExist = await User.findOne({ email });
         if (userExist) {
             console.log('User already exists.');
-            return res.status(409).json({ message: "User already exists.", data:userExist, success: false });
+            return res.status(409).json({ message: "User already exists.", data: userExist, success: false });
         }
 
         const existingUsername = await User.findOne({ username });
         if (existingUsername) {
             console.log('Username already exists.');
-            return res.status(409).json({ message: "User already exists.", data:existingUsername, success: false });
+            return res.status(409).json({ message: "User already exists.", data: existingUsername, success: false });
         }
 
         const ssoLoginSave = new User({
@@ -75,14 +75,15 @@ const editUser = async (req, res, next) => {
         const requiredFields = ['name', 'username', 'email', 'number', 'gender', 'userType', 'status', 'hospitalId'];
         const missingFields = requiredFields.filter(field => !req.body[field]?.trim());
 
-        if(userType === 'admin') return res.status(400).json({message:"You can't change a user or anyone else into an admin."});
-
         if (missingFields.length > 0) {
             return res.status(400).json({
                 message: `Missing required fields: ${missingFields.join(', ')}`,
                 success: false
             });
         }
+
+        if (userType === 'admin') return res.status(400).json({ message: "You can't change a user or anyone else into an admin." });
+
 
         // Validate email format
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -149,7 +150,7 @@ const editUser = async (req, res, next) => {
 
     } catch (error) {
         console.log('error', error)
-        return(500).json({message:"Something went wrong to update User. Please try again later", success:false})
+        return (500).json({ message: "Something went wrong to update User. Please try again later", success: false })
     }
 }
 
