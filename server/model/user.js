@@ -50,6 +50,36 @@ const UserSchema = new mongoose.Schema({
     status: {
         type: String,
     },
+    registrationNumber: {
+        type: String,
+    },
+    street: {
+        type: String,
+    },
+    city: {
+        type: String,
+    },
+    state: {
+        type: String,
+    },
+    pinCode: {
+        type: Number,
+    },
+    panNumber: {
+        type: String,
+    },
+    tanNumber: {
+        type: String,
+    },
+    gstNumber: {
+        type: String,
+    },
+    uploadDocument: {
+        type: Buffer,
+    },
+    gender: {
+        type: String,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
