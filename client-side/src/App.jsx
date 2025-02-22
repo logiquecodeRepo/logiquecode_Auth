@@ -6,20 +6,22 @@ import Home from './Pages/Home';
 
 function App() {
   const route = createBrowserRouter([
-
     {
-      path: '/login',
-      element: <Login />
+      path: "/login",
+      element: <Login />,
     },
     {
-      path: '/home',
-      element: <Home />
+      path: "/home",
+      element: <Home />,
     },
     {
-      path: '/',
-      element: <Navigate to = '/login' />
-    }
-    
+      path: "/",
+      element: <Navigate to="/login" />,
+    },
+    {
+      path: "/form",
+      element: <Form />,
+    },
   ]);
 
   return (

@@ -126,7 +126,7 @@ const Header = ({ onMenuToggle }) => {
           {showAdminDropdown && (
             <ul className="mt-2 ml-4 w-full bg-white shadow-md rounded-lg border border-gray-300 z-50 transition-all duration-1000 ease-in-out">
               <li className="py-2 px-4 hover:bg-gray-200">
-                <a href="/createUser">
+                <a href="/form">
                   <i className="fas fa-user-plus mr-2"></i> Create Admin User
                 </a>
               </li>
