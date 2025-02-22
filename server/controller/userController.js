@@ -2,11 +2,22 @@ let User = require('../model/user');
 
 const create = async (req, res) => {
     try {
-        const { name, email, username, password, projectName, projectUrl, number, userType, expirationTime, currentDateTime } = req.body;
+        const { name, email, username, password, projectName, projectUrl, number, userType, gender, gst, pan, tan, street, city, state, pin, registration, document, expirationTime, currentDateTime } = req.body;
         console.log('email', email, 'name', name);
 
+        // Validate required fields
+        const requiredFields = [ 'username', 'email', 'number', 'gender', 'userType'];
+        const missingFields = requiredFields.filter(field => !req.body[field]?.trim());
+
+        if (missingFields.length > 0) {
+            return res.status(400).json({
+                message: `Missing required fields: ${missingFields.join(', ')}`,
+                success: false
+            });
+        }
+
         // const regex = /^[a-zA-Z0-9_]+$/;
-        // we commented this code bcs of patient id content other latters and it blocks
+        // // we commented this code bcs of patient id content other latters and it blocks
         // if (!regex.test(username)) {
         //     console.log("Username can only contain letters, numbers, and underscores.")
         //     return res.status(400).json({
@@ -49,6 +60,16 @@ const create = async (req, res) => {
             ],
             status: "active",
             userType: userType,
+            registrationNumber: registration,
+            pinCode: pin,
+            panNumber: pan,
+            gstNumber: gst,
+            tanNumber: tan,
+            street,
+            city,
+            state,
+            uploadDocument: document,
+            gender,
             createdAt: currentDateTime,
             expiresAt: expirationTime ?? null
 
@@ -63,7 +84,7 @@ const create = async (req, res) => {
 
     } catch (error) {
         console.log('error :', error);
-        res.status(500).json({ errorMessage: error.message });
+        res.status(500).json({ message: "Something went wrong. Please try again.", success: false });
     }
 }
 
