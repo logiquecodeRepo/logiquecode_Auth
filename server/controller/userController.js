@@ -85,7 +85,7 @@ const editUser = async (req, res, next) => {
         if (userType === 'admin') return res.status(400).json({ message: "You can't change a user or anyone else into an admin." });
 
 
-        // Validate email format
+        // Validate email format to make it more readable
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             return res.status(400).json({
