@@ -71,14 +71,14 @@ function Home() {
   };
 
   const handleProjectClick = (project) => {
-    const { name, serverUrl } = project;
+    const { name, projectUrl } = project;
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("name");
 
-    if (["DPMS", "LMS", "CMRKS", "CRM", "Other"].includes(name)) {
+    if (["DPMS", "LMS", "CMRKS", "GPMA", 'ERP', "Other"].includes(name)) {
       setCookie("authToken", token, 1);
       setCookie("username", username, 1);
-      window.open(serverUrl, "_blank");
+      window.open(projectUrl, "_blank");
     } else {
       handleError("Unknown project");
     }

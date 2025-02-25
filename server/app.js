@@ -12,6 +12,7 @@ var authRouter = require('./routes/AuthRouter');
 var otpRouter = require('./routes/otpRouter');
 var projectRouter = require('./routes/getProjectDetailsRouter');
 const validateTokenRouter = require('./routes/validateTokenRouter');
+const lcAuthUsersRouter = require('./routes/lcAuthUsersRouter');
 
 var app = express();
 
@@ -32,6 +33,7 @@ app.use('/auth', authRouter);
 app.use('/otp', otpRouter);
 app.use('/projects', projectRouter);
 app.use('/validateToken', validateTokenRouter);
+app.use('/lc_users', lcAuthUsersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

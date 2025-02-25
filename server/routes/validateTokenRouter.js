@@ -25,7 +25,7 @@ router.post('/', async (req, res, next) => {
         return res.status(200).json({ message: "Token validate successfully", success: true, decoded, tokenExReTime});
     } catch (err) {
         console.log('Error found in validateToken router: ', err);
-        return res.status(500).json({ message: "Internal server error", success: false });
+        return res.status(500).json({ message: "Something went wrong to validate token", success: false });
     }
 })
 
