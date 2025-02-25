@@ -2,7 +2,7 @@ let User = require('../model/user');
 
 const create = async (req, res) => {
     try {
-        const { name, email, username, password, projectName, projectUrl, number, userType, gender, gst, pan, tan, street, city, state, pin, registration, document, expirationTime, currentDateTime } = req.body;
+        const { name, email, username, password, projects, number, userType, gender, gst, pan, tan, street, city, state, pin, registration, document, expirationTime, currentDateTime } = req.body;
         console.log('email', email, 'name', name);
 
         // Validate required fields
@@ -52,12 +52,7 @@ const create = async (req, res) => {
             password: password,
             number: number,
             email: email,
-            projects: [
-                {
-                    name: projectName,
-                    serverUrl: projectUrl,
-                },
-            ],
+            projects,
             status: "active",
             userType: userType,
             registrationNumber: registration,
