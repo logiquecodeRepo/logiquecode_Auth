@@ -5,7 +5,7 @@ const ProjectSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    serverUrl: {
+    projectUrl: {
         type: String,
         required: true
     },
