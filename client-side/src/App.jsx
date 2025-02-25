@@ -3,7 +3,8 @@ import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './App.css';
 import Login from './Pages/Login';
 import Home from './Pages/Home';
-import Form from './Pages/Form'
+import CreateUser from './Users/CreateUser';
+
 
 function App() {
   const route = createBrowserRouter([
@@ -20,8 +21,8 @@ function App() {
       element: <Navigate to="/login" />,
     },
     {
-      path: "/form",
-      element: <Form />,
+      path: "/createUser",
+      element: <CreateUser />,
     },
   ]);
 

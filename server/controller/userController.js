@@ -2,68 +2,154 @@ let User = require('../model/user');
 
 const create = async (req, res) => {
     try {
-        const { name, email, username, password, projectName, projectUrl, number, userType, expirationTime, currentDateTime } = req.body;
-        console.log('email', email, 'name', name);
+      const {
+        name,
+        email,
+        username,
+        password,
+        project,
+        number,
+        userType,
+        gender,
+        gst,
+        pan,
+        tan,
+        street,
+        city,
+        state,
+        pin,
+        registration,
+        document,
+        expirationTime,
+        currentDateTime,
+      } = req.body;
+      console.log("email", email, "name", name);
 
-        // const regex = /^[a-zA-Z0-9_]+$/;
-        // we commented this code bcs of patient id content other latters and it blocks
-        // if (!regex.test(username)) {
-        //     console.log("Username can only contain letters, numbers, and underscores.")
-        //     return res.status(400).json({
-        //         message: "Username can only contain letters, numbers, and underscores.",
-        //         success: false,
-        //     });
-        // }
+      // Validate required fields
+      const requiredFields = [
+        "username",
+        "email",
+        "number",
+        "gender",
+        "userType",
+      ];
+      const missingFields = requiredFields.filter(
+        (field) => !req.body[field]?.trim()
+      );
+
+      if (missingFields.length > 0) {
+        return res.status(400).json({
+          message: `Missing required fields: ${missingFields.join(", ")}`,
+          success: false,
+        });
+      }
+
+      // const regex = /^[a-zA-Z0-9_]+$/;
+      // // we commented this code bcs of patient id content other latters and it blocks
+      // if (!regex.test(username)) {
+      //     console.log("Username can only contain letters, numbers, and underscores.")
+      //     return res.status(400).json({
+      //         message: "Username can only contain letters, numbers, and underscores.",
+      //         success: false,
+      //     });
+      // }
+
+      if (username.length < 3 || username.length > 15) {
+        return res.status(400).json({
+          message: "Username must be between 3 and 15 characters.",
+          success: false,
+        });
+      }
+
+      const userExist = await User.findOne({ email });
+      if (userExist) {
+        console.log("User already exists.");
+        return res
+          .status(409)
+          .json({
+            message: "User already exists.",
+            data: userExist,
+            success: false,
+          });
+      }
+
+      const existingUsername = await User.findOne({ username });
+      if (existingUsername) {
+        console.log("Username already exists.");
+        return res
+          .status(409)
+          .json({
+            message: "User already exists.",
+            data: existingUsername,
+            success: false,
+          });
+      }
+
+      let uploadDocumentBuffer = null;
+      if (document && typeof document === "string") {
+        uploadDocumentBuffer = Buffer.from(document, "base64"); // Convert base64 string to Buffer
+      }
+
+      // Environment se project URLs ko map karna
+      const projectUrls = {
+        lms: process.env.LMS_SERVER_URL,
+        dpms: process.env.DPMS_SERVER_URL,
+      };
+
+      // Selected projects ko object format me convert karna
+      const selectedProjects = project.map((projName) => ({
+        name: projName,
+        serverUrl: projectUrls[projName] || "Unknown",
+      }));
 
 
-        if (username.length < 3 || username.length > 15) {
-            return res.status(400).json({
-                message: "Username must be between 3 and 15 characters.",
-                success: false,
-            });
-        }
+      const ssoLoginSave = new User({
+        name: name,
+        username: username,
+        password: password,
+        number: number,
+        email: email,
+        //   project: [
+        //     {
+        //       name: projectName,
+        //       serverUrl: projectUrl,
+        //     },
+        //   ],
+        project: selectedProjects,
+        status: "active",
+        userType: userType,
+        registrationNumber: registration,
+        pinCode: pin,
+        panNumber: pan,
+        gstNumber: gst,
+        tanNumber: tan,
+        street,
+        city,
+        state,
+        // uploadDocument: document,
+        uploadDocument: uploadDocumentBuffer,
+        gender,
+        createdAt: currentDateTime,
+        expiresAt: expirationTime ?? null,
+      });
 
-        const userExist = await User.findOne({ email });
-        if (userExist) {
-            console.log('User already exists.');
-            return res.status(409).json({ message: "User already exists.", data: userExist, success: false });
-        }
+      const savedData = await ssoLoginSave.save();
+      if (!savedData) {
+        return res
+          .status(401)
+          .json({ message: "User not created.", success: false });
+      }
 
-        const existingUsername = await User.findOne({ username });
-        if (existingUsername) {
-            console.log('Username already exists.');
-            return res.status(409).json({ message: "User already exists.", data: existingUsername, success: false });
-        }
-
-        const ssoLoginSave = new User({
-            name: name,
-            username: username,
-            password: password,
-            number: number,
-            email: email,
-            projects: [
-                {
-                    name: projectName,
-                    serverUrl: projectUrl,
-                },
-            ],
-            status: "active",
-            userType: userType,
-            createdAt: currentDateTime,
-            expiresAt: expirationTime ?? null
-
-        })
-
-        const savedData = await ssoLoginSave.save();
-        if (!savedData) {
-            return res.status(401).json({ message: "User not created.", success: false });
-        }
-
-        return res.status(200).json({ message: "User created successfully.", savedData, success: true });
-
+      return res
+        .status(200)
+        .json({
+          message: "User created successfully.",
+          savedData,
+          success: true,
+        });
     } catch (error) {
         console.log('error :', error);
-        res.status(500).json({ errorMessage: error.message });
+        res.status(500).json({ message: "Something went wrong. Please try again.", success: false });
     }
 }
 
