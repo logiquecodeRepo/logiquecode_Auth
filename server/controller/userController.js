@@ -2,8 +2,28 @@ let User = require('../model/user');
 
 const create = async (req, res) => {
     try {
-        const { name, email, username, password, projectName, projectUrl, number, userType, gender, gst, pan, tan, street, city, state, pin, registration, document, expirationTime, currentDateTime } = req.body;
-        console.log('email', email, 'name', name);
+      const {
+        name,
+        email,
+        username,
+        password,
+        project,
+        number,
+        userType,
+        gender,
+        gst,
+        pan,
+        tan,
+        street,
+        city,
+        state,
+        pin,
+        registration,
+        document,
+        expirationTime,
+        currentDateTime,
+      } = req.body;
+      console.log("email", email, "name", name);
 
       // Validate required fields
       const requiredFields = [
@@ -81,36 +101,36 @@ const create = async (req, res) => {
         name: projName,
         serverUrl: projectUrls[projName] || "Unknown",
       }));
-
-
-        const ssoLoginSave = new User({
-            name: name,
-            username: username,
-            password: password,
-            number: number,
-            email: email,
-            projects: [
-                {
-                    name: projectName,
-                    serverUrl: projectUrl,
-                },
-            ],
-            status: "active",
-            userType: userType,
-            registrationNumber: registration,
-            pinCode: pin,
-            panNumber: pan,
-            gstNumber: gst,
-            tanNumber: tan,
-            street,
-            city,
-            state,
-            uploadDocument: document,
-            gender,
-            createdAt: currentDateTime,
-            expiresAt: expirationTime ?? null
-
-        })
+      
+      const ssoLoginSave = new User({
+        name: name,
+        username: username,
+        password: password,
+        number: number,
+        email: email,
+        //   project: [
+        //     {
+        //       name: projectName,
+        //       serverUrl: projectUrl,
+        //     },
+        //   ],
+        projects: selectedProjects,
+        status: "active",
+        userType: userType,
+        registrationNumber: registration,
+        pinCode: pin,
+        panNumber: pan,
+        gstNumber: gst,
+        tanNumber: tan,
+        street,
+        city,
+        state,
+        // uploadDocument: document,
+        uploadDocument: uploadDocumentBuffer,
+        gender,
+        createdAt: currentDateTime,
+        expiresAt: expirationTime ?? null,
+      });
 
       const savedData = await ssoLoginSave.save();
       if (!savedData) {
